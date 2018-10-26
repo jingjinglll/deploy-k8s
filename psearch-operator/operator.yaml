@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pravega-search-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: pravega-search-operator
+  template:
+    metadata:
+      labels:
+        name: pravega-search-operator
+    spec:
+      containers:
+        - name: pravega-search-operator
+          image: jirnsr/pravega-search-operator:latest
+          ports:
+          - containerPort: 60000
+            name: metrics
+          command:
+          - pravega-search-operator
+          imagePullPolicy: Always
+          env:
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: OPERATOR_NAME
+              value: "pravega-search-operator"
