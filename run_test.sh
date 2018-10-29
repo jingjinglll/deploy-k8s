@@ -45,13 +45,13 @@ kubectl exec resthead-0 -n $namespace -- curl -ik -XPUT 'http://localhost:9098/s
 #  fi
 #done
 
-echo "Coping cli-0.1.0.0.jar"
+echo "Copying cli-0.1.0.0.jar"
 kubectl cp ./lib/cli-0.1.0.0.jar controller-0:/opt/emc/nautilus/controller/lib -n $namespace 
-echo "Coping httpclient-4.5.5.jar"
+echo "Copying httpclient-4.5.5.jar"
 kubectl cp ./lib/httpclient-4.5.5.jar controller-0:/opt/emc/nautilus/controller/lib -n $namespace 
-echo "Coping httpcore-4.5.5.jar"
+echo "Copying httpcore-4.5.5.jar"
 kubectl cp ./lib/httpcore-4.4.9.jar controller-0:/opt/emc/nautilus/controller/lib -n $namespace 
-echo "Coping scripts"
+echo "Copying scripts"
 kubectl cp ./scripts/cli controller-0:/opt/emc/nautilus/controller/bin -n $namespace
 kubectl cp ./scripts/generate_data.py controller-0:/opt/emc/nautilus/controller -n $namespace
 
