@@ -17,7 +17,7 @@ done
 
 
 echo -n "Creating test index..."
-kubectl cp ./create_testindex.sh $resthead_po:/opt/emc/nautilus/resthead -n $namespace  > /dev/null 2>&1
+kubectl cp ./scripts/create_testindex.sh $resthead_po:/opt/emc/nautilus/resthead -n $namespace  > /dev/null 2>&1
 kubectl exec resthead-0 -n $namespace -- /bin/bash ./create_testindex.sh > /dev/null 2>&1
 if [ $? -eq 0 ] 
 then
@@ -53,8 +53,8 @@ kubectl cp ./lib/httpclient-4.5.5.jar controller-0:/opt/emc/nautilus/controller/
 echo "Coping httpcore-4.5.5.jar"
 kubectl cp ./lib/httpcore-4.4.9.jar controller-0:/opt/emc/nautilus/controller/lib -n $namespace 
 echo "Coping scripts"
-kubectl cp ./cli controller-0:/opt/emc/nautilus/controller/bin -n $namespace
-kubectl cp ./generate_data.py controller-0:/opt/emc/nautilus/controller -n $namespace
+kubectl cp ./scripts/cli controller-0:/opt/emc/nautilus/controller/bin -n $namespace
+kubectl cp ./scripts/generate_data.py controller-0:/opt/emc/nautilus/controller -n $namespace
 
 echo "Generating data"
 kubectl exec controller-0 -n $namespace -- python generate_data.py
