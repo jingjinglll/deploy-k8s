@@ -70,7 +70,7 @@ do
     echo -ne "."
 	sleep 5
   else
-    echo "You can access Kibana service at http://$resthead_url"
+    echo "You can access Kibana service at http://$kibana_url"
 	break
   fi
 done
