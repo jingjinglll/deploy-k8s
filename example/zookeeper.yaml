@@ -4,3 +4,9 @@ metadata:
   name: "example"
 spec:
   size: 1
+  pod:
+    labels:
+      app: example
+    resources:
+      requests:
+        cpu: 0.2

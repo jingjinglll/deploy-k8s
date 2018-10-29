@@ -29,7 +29,7 @@ spec:
       tag: latest
       pullPolicy: Always
   shardWorker:
-    replicas: 3
+    replicas: 1
     image:
       repository: jirnsr/shardworker
       tag: latest
