@@ -45,7 +45,6 @@ kubectl exec resthead-0 -n $namespace -- curl -ik -XPUT 'http://localhost:9098/s
 #  fi
 #done
 
-echo "Generating data"
 echo "Coping cli-0.1.0.0.jar"
 kubectl cp ./lib/cli-0.1.0.0.jar controller-0:/opt/emc/nautilus/controller/lib -n $namespace 
 echo "Coping httpclient-4.5.5.jar"
