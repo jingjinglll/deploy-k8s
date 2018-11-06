@@ -54,6 +54,7 @@ kubectl cp ./lib/httpcore-4.4.9.jar controller-0:/opt/emc/nautilus/controller/li
 echo "Copying scripts"
 kubectl cp ./scripts/cli controller-0:/opt/emc/nautilus/controller/bin -n $namespace
 kubectl cp ./scripts/generate_data.py controller-0:/opt/emc/nautilus/controller -n $namespace
+kubectl cp ./scripts/cli.yml controller-0:/opt/emc/nautilus/controller/conf -n $namespace
 
 echo "Generating data"
 kubectl exec controller-0 -n $namespace -- python generate_data.py
