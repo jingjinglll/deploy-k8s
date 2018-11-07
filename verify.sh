@@ -20,10 +20,10 @@ retry=0
 while [ $retry -le 100 ]
 do
   kubectl cp ./scripts/search_all.sh $resthead_po:/opt/emc/nautilus/resthead -n $namespace  > /dev/null 2>&1
-  kubectl exec resthead-0 -n $namespace -- /bin/bash ./search_all.sh > /dev/null 2>&1
+  kubectl exec resthead-0 -n $namespace -- /bin/bash ./search_all.sh #> /dev/null 2>&1
   if [ $? -eq 0 ] 
   then
-    echo "Succeeded"
+    echo "Finished"
   	break
   fi
   retry=$[$retry+1]
@@ -39,10 +39,10 @@ fi
 
 echo -n "Creating Kibana index..."
 kubectl cp ./scripts/create_kibana_index.sh $resthead_po:/opt/emc/nautilus/resthead -n $namespace  > /dev/null 2>&1
-kubectl exec resthead-0 -n $namespace -- /bin/bash ./create_kibana_index.sh > /dev/null 2>&1
+kubectl exec resthead-0 -n $namespace -- /bin/bash ./create_kibana_index.sh #> /dev/null 2>&1
 if [ $? -eq 0 ] 
 then
-  echo "Succeeded"
+  echo "Finished"
 else
   echo "Error in creating Kibana index, please check server status"
 fi

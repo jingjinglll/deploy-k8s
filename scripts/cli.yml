@@ -1,12 +1,3 @@
 common:
   defaultSegmentNum: 1
-
-pravega:
-  pravegaScopeEpoch: 0
-  pravegaControllerAddress: 127.0.0.1
-  pravegaControllerPort: 9090
-  pravegaUserName: admin
-  pravegaPassword: password
-  pravegaCertFilePem: pravegadummycerts/pravegacert.pem
-  pravegaKeyFilePem: pravegadummycerts/pravegakey.pem
-  pravegaPasswdFilePem: pravegadummycerts/pravegapasswd
+  
