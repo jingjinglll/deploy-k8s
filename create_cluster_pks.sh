@@ -15,13 +15,6 @@ do
   esac
 done
 
-if [ -z "$user" ]; then
-	echo "Enter your the email address of google clould platform, this will be used to create cluster role binding"
-	read user
-fi
-echo "Creating role binding using: $user"
-kubectl create clusterrolebinding default-cluster-admin-binding --clusterrole=cluster-admin --user=$user
-
 echo "Initializing helm"
 helm init
 kubectl create serviceaccount --namespace kube-system tiller
@@ -31,7 +24,7 @@ helm repo update
 sleep 5
 
 echo "Installing nfs-server-provisioner"
-helm install stable/nfs-server-provisioner
+helm install stable/nfs-server-provisioner --set=persistence.size=60Gi
 
 kubectl get namespace $namespace > /dev/null 2>&1
 if [ $? != 0 ]
@@ -66,7 +59,7 @@ echo "Creating Zookeeper Cluster"
 kubectl create -n $namespace -f example/zookeeper.yaml
 
 echo "Creating Pravega Cluster"
-kubectl create -n $namespace -f example/pravega.yaml
+kubectl create -n $namespace -f example/pravega_pks.yaml
 
 echo "Creating Pravega Search Cluster"
 kubectl create -n $namespace -f example/psearch.yaml
