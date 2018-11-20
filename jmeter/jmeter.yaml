@@ -1,0 +1,44 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: jmeter-task
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: jmeter
+spec:
+  template:
+    metadata:
+      name: jmeter
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: jmeter
+        image: jirnsr/jmeter
+        command:
+          - "/apache-jmeter-5.0/bin/jmeter"
+          - "-n"
+          - "-t"
+          - "/TestPlan.jmx"
+          - "-l"
+          - "/apache-jmeter-5.0/output/log"
+          - "-j"
+          - "/apache-jmeter-5.0/output/joker"
+        volumeMounts:
+        - name: data
+          mountPath: /apache-jmeter-5.0/input
+          subPath: input
+        - name: data
+          mountPath: /apache-jmeter-5.0/output
+          subPath: output
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: jmeter-task
