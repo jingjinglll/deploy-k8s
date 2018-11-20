@@ -24,7 +24,7 @@ helm repo update
 sleep 5
 
 echo "Installing nfs-server-provisioner"
-helm install stable/nfs-server-provisioner --set=persistence.size=60Gi
+helm install stable/nfs-server-provisioner --set=persistence.enabled=true,persistence.size=60Gi
 
 kubectl get namespace $namespace > /dev/null 2>&1
 if [ $? != 0 ]
@@ -59,10 +59,10 @@ echo "Creating Zookeeper Cluster"
 kubectl create -n $namespace -f example/zookeeper.yaml
 
 echo "Creating Pravega Cluster"
-kubectl create -n $namespace -f example/pravega_pks.yaml
+kubectl create -n $namespace -f example/pravega.yaml
 
 echo "Creating Pravega Search Cluster"
-kubectl create -n $namespace -f example/psearch_pks.yaml
+kubectl create -n $namespace -f example/psearch.yaml
 
 echo "Verify services and create kibana index"
 ./verify_pks.sh -n $namespace -k $kibana_service -r $resthead_service
