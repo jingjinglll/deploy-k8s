@@ -62,8 +62,8 @@ echo "Creating Pravega Cluster"
 kubectl create -n $namespace -f example/pravega_pks.yaml
 
 echo "Creating Pravega Search Cluster"
-kubectl create -n $namespace -f example/psearch.yaml
+kubectl create -n $namespace -f example/psearch_pks.yaml
 
 echo "Verify services and create kibana index"
-./verify.sh -n $namespace -k $kibana_service -r $resthead_service
+./verify_pks.sh -n $namespace -k $kibana_service -r $resthead_service
 
