@@ -7,7 +7,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 30Gi
 ---
 apiVersion: batch/v1
 kind: Job
@@ -28,15 +28,12 @@ spec:
           - "-t"
           - "/TestPlan.jmx"
           - "-l"
-          - "/apache-jmeter-5.0/output/log"
+          - "/output/log.csv"
           - "-j"
-          - "/apache-jmeter-5.0/output/joker"
+          - "/output/joker"
         volumeMounts:
         - name: data
-          mountPath: /apache-jmeter-5.0/input
-          subPath: input
-        - name: data
-          mountPath: /apache-jmeter-5.0/output
+          mountPath: /output
           subPath: output
       volumes:
       - name: data
