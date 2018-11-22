@@ -34,7 +34,6 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /output
-          subPath: output
       volumes:
       - name: data
         persistentVolumeClaim:
