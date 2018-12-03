@@ -7,7 +7,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 30Gi
+      storage: 60Gi
 ---
 apiVersion: batch/v1
 kind: Job
@@ -21,16 +21,16 @@ spec:
       restartPolicy: Never
       containers:
       - name: jmeter
-        image: jirnsr/jmeter
+        image: jirnsr/jmeter:latest
         command:
           - "/apache-jmeter-5.0/bin/jmeter"
           - "-n"
           - "-t"
           - "/TestPlan.jmx"
           - "-l"
-          - "/output/log.csv"
+          - "/output/result.jtl"
           - "-j"
-          - "/output/joker"
+          - "/output/log"
         volumeMounts:
         - name: data
           mountPath: /output
