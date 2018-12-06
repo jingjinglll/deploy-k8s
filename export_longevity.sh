@@ -36,26 +36,19 @@ else
   kubectl exec $jmeter_po -n $namespace -- rm output/result.tar.gz
 
   echo "Pre-processing the jtl..."
-  #awk 'FPAT="([^,]+)|(\"[^\"]+\")"{x=$0;while( (x~ /^[0-9]/)&&(gsub(/\"/,"\"",x)%2)!=0){getline;x=x " ";x=x $0};$0=x;print}' | awk -F',' '{print $1}'
-  #cat  output/result.jtl  | awk 'FPAT="([^,]+)|(\"[^\"]+\")"{x=$0;while((gsub(/\"/,"\"",x)%2)!=0){getline;x=x " ";x=x $0};$0=x;print}' | head -n -1 >> output/temp.jtl
-  #cat  output/temp.jtl  | awk -F',' 'NF == 17' > output/temp2.jtl
-
-  #cat  output/result.jtl | awk 'FPAT="([^,]+)|(\"[^\"]+\")"{x=$0;while((x~ /^[0-9]/)&&(gsub(/\"/,"\"",x)%2)!=0){getline;x=x " ";x=x $0};$0=x;print}' | awk -F',' 'NF == 17' >> output/temp.jtl
-  #cat  output/temp.jtl  | awk -F',' 'NF == 17' > output/temp2.jtl
-  #awk 'FPAT="([^,]+)|(\"[^\"]+\")"{x=$0;while((x~ /^[0-9]/)&&(gsub(/\"/,"\"",x)%2)!=0){getline;x=x " ";x=x $0};$0=x;print}' output/result.jtl >> temp1.jtl
-  #awk -F',' 'NF == 17' temp1.jtl >> output/temp2.jtl
-
   nlines=`wc -l output/${filename} | awk '{print $1}'`
 
   head -n 1 output/${filename} > output/temp.jtl
 
-  cat output/${filename} | awk -v nl=${nlines} 'FPAT="([^,]+)|(\"[^\"]+\")"{x=$0;while((x~ /^[0-9]/)&&(NR!=nl)&&(gsub(/\"/,"\"",x)%2)!=0){getline;x=x " ";x=x $0};$0=x;print}' | awk -F',' '$17~/^[0-9]+$/' | awk -F',' 'NF==17' | sed "s/\"//g" >> output/temp.jtl
+  #cat output/${filename} | awk -v nl=${nlines} 'FPAT="([^,]+)|(\"[^\"]+\")"{x=$0;while((x~ /^[0-9]/)&&(NR!=nl)&&(gsub(/\"/,"\"",x)%2)!=0){getline;x=x " ";x=x $0};$0=x;print}' | awk -F',' '$17~/^[0-9]+$/' | awk -F',' 'NF==17' | sed "s/\"//g" >> output/temp.jtl
+  cat output/${filename} | awk -F',' '$16~/^[0-9]+$/' | awk -F',' 'NF==16' | sed "s/\"//g" >> output/temp.jtl
 
 
   if [ ! -e apache-jmeter-5.0 ]; then
   	echo "Downloading Jmeter..."
     wget http://mirrors.advancedhosters.com/apache/jmeter/binaries/apache-jmeter-5.0.tgz
     tar xzvf apache-jmeter-5.0.tgz
+    echo "jmeter.save.saveservice.assertion_results_failure_message=false" >> /apache-jmeter-5.0/bin/jmeter.properties
     rm apache-jmeter-5.0.tgz
   fi
 
