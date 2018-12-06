@@ -43,7 +43,9 @@ kubectl create -n $namespace -f https://raw.githubusercontent.com/pravega/zookee
 
 echo "Creating Pravega Operator"
 kubectl create -n $namespace -f https://raw.githubusercontent.com/pravega/pravega-operator/master/deploy/crd.yaml
-kubectl create -n $namespace -f https://raw.githubusercontent.com/pravega/pravega-operator/master/deploy/rbac.yaml
+kubectl create -n $namespace -f https://raw.githubusercontent.com/pravega/pravega-operator/master/deploy/role.yaml
+kubectl create -n $namespace -f https://raw.githubusercontent.com/pravega/pravega-operator/master/deploy/role_binding.yaml
+kubectl create -n $namespace -f https://raw.githubusercontent.com/pravega/pravega-operator/master/deploy/service_account.yaml
 kubectl create -n $namespace -f https://raw.githubusercontent.com/pravega/pravega-operator/master/deploy/operator.yaml
 
 

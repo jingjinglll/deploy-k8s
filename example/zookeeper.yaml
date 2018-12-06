@@ -1,12 +1,9 @@
 apiVersion: "zookeeper.pravega.io/v1beta1"
 kind: "ZookeeperCluster"
 metadata:
-  name: "example"
+  name: "zk"
 spec:
-  size: 1
+  size: 2
   pod:
     labels:
-      app: example
-    resources:
-      requests:
-        cpu: 0.2
+      app: zk

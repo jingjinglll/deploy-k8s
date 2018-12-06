@@ -20,9 +20,11 @@ kubectl delete -n $namespace -f psearch-operator
 
 echo "Deleting Pravega Operator"
 
-kubectl delete -n $namespace -f https://raw.githubusercontent.com/pravega/pravega-operator/master/deploy/operator.yaml
-kubectl delete -n $namespace -f https://raw.githubusercontent.com/pravega/pravega-operator/master/deploy/rbac.yaml
 kubectl delete -n $namespace -f https://raw.githubusercontent.com/pravega/pravega-operator/master/deploy/crd.yaml
+kubectl delete -n $namespace -f https://raw.githubusercontent.com/pravega/pravega-operator/master/deploy/role.yaml
+kubectl delete -n $namespace -f https://raw.githubusercontent.com/pravega/pravega-operator/master/deploy/role_binding.yaml
+kubectl delete -n $namespace -f https://raw.githubusercontent.com/pravega/pravega-operator/master/deploy/service_account.yaml
+kubectl delete -n $namespace -f https://raw.githubusercontent.com/pravega/pravega-operator/master/deploy/operator.yaml
 
 echo "Deleting Zookeeper Operator"
 kubectl delete -n $namespace -f https://raw.githubusercontent.com/pravega/zookeeper-operator/master/deploy/all_ns/operator.yaml
