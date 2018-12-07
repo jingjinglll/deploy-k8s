@@ -19,7 +19,7 @@ spec:
 
   bookkeeper:
     image:
-      repository: pravega/bookkeeper
+      repository: jirnsr/bookkeeper
       tag: latest
       pullPolicy: Always
 
@@ -54,7 +54,7 @@ spec:
           storage: 20Gi
 
     image:
-      repository: pravega/pravega
+      repository: jirnsr/pravega
       tag: latest
       pullPolicy: Always
 
