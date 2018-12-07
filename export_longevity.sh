@@ -17,6 +17,7 @@ datestr=`date "+%y-%m-%d-%H-%M-%S"`
 kubectl cp ./jmeter/generate_report.sh $jmeter_po:/bin -n $namespace
 kubectl exec $jmeter_po -n $namespace -- ./bin/generate_report.sh
 
+echo "Copying generated dashboard..."
 kubectl cp $jmeter_po:output/dashboard output/dashboard.${datestr} -n $namespace
 
 if [ $? -eq 0 ]; then
