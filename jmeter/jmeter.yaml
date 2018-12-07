@@ -22,6 +22,9 @@ spec:
       containers:
       - name: jmeter
         image: jirnsr/jmeter:latest
+        resources:
+          requests:
+            memory: 8Gi
         command:
           - "/apache-jmeter-5.0/bin/jmeter"
           - "-n"
@@ -38,7 +41,3 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: jmeter-task
-      pod:
-        resources:
-          requests:
-            memory: 8Gi
