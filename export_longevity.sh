@@ -1,6 +1,7 @@
 #!/bin/bash
 namespace="default"
 filename="result.jtl"
+dashboard="jmeter-dashboard"
 
 
 while true 
@@ -14,19 +15,19 @@ done
 jmeter_po=`kubectl get po -n $namespace| grep jmeter | grep Running | awk '{print $1}'`
 datestr=`date "+%y-%m-%d-%H-%M-%S"`
 
-kubectl cp ./jmeter/generate_report.sh $jmeter_po:/bin -n $namespace
-kubectl exec $jmeter_po -n $namespace -- ./bin/generate_report.sh
+kubectl cp ./jmeter/generate_report.sh $namespace/$jmeter_po:/bin -c $dashboard
+kubectl exec $jmeter_po -n $namespace -c $dashboard -- ./bin/generate_report.sh
 
 echo "Copying generated dashboard..."
-kubectl cp $jmeter_po:output/dashboard output/dashboard.${datestr} -n $namespace
+kubectl cp $namespace/$jmeter_po:output/dashboard output/dashboard.${datestr} -c $dashboard
 
 if [ $? -eq 0 ]; then
   echo "Longevity reports are saved to ./output"
-  kubectl exec $jmeter_po -n $namespace -- rm -rf /output/dashboard
+  kubectl exec $jmeter_po -n $namespace -c $dashboard -- rm -rf /output/dashboard
 else
   echo "Failed in export reports in container, try to generate reports locally"
-  kubectl exec $jmeter_po -n $namespace -- tar czvf output/result.tar.gz output/${filename}
-  kubectl cp $jmeter_po:output/result.tar.gz output/. -n $namespace
+  kubectl exec $jmeter_po -n $namespace  -c $dashboard -- tar czvf output/result.tar.gz output/${filename}
+  kubectl cp $namespace/$jmeter_po:output/result.tar.gz output/. -c $dashboard
 
   if [ $? -ne 0 ]; then
   	echo "Failed to copy result file"
@@ -34,7 +35,7 @@ else
   fi
 
   tar xzvf output/result.tar.gz output
-  kubectl exec $jmeter_po -n $namespace -- rm output/result.tar.gz
+  kubectl exec $jmeter_po -n $namespace -c $dashboard -- rm output/result.tar.gz
 
   echo "Pre-processing the jtl..."
   nlines=`wc -l output/${filename} | awk '{print $1}'`
