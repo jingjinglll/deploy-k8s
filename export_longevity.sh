@@ -15,18 +15,20 @@ done
 jmeter_po=`kubectl get po -n $namespace| grep jmeter | grep Running | awk '{print $1}'`
 datestr=`date "+%y-%m-%d-%H-%M-%S"`
 
-kubectl cp ./jmeter/generate_report.sh $namespace/$jmeter_po:/bin -c $dashboard
-kubectl exec $jmeter_po -n $namespace -c $dashboard -- ./bin/generate_report.sh
+#kubectl cp ./jmeter/generate_report.sh $namespace/$jmeter_po:/bin -c $dashboard
+#kubectl exec $jmeter_po -n $namespace -c $dashboard -- ./bin/generate_report.sh
 
-echo "Copying generated dashboard..."
-kubectl cp $namespace/$jmeter_po:output/dashboard output/dashboard.${datestr} -c $dashboard
+#echo "Copying generated dashboard..."
+#kubectl cp $namespace/$jmeter_po:output/dashboard output/dashboard.${datestr} -c $dashboard
 
-if [ $? -eq 0 ]; then
-  echo "Longevity reports are saved to ./output"
-  kubectl exec $jmeter_po -n $namespace -c $dashboard -- rm -rf /output/dashboard
-else
-  echo "Failed in export reports in container, try to generate reports locally"
+#if [ $? -eq 0 ]; then
+#  echo "Longevity reports are saved to ./output"
+#  kubectl exec $jmeter_po -n $namespace -c $dashboard -- rm -rf /output/dashboard
+#else
+#  echo "Failed in export reports in container, try to generate reports locally"
+  echo "zip the logs in container"
   kubectl exec $jmeter_po -n $namespace  -c $dashboard -- tar czvf output/result.tar.gz output/${filename}
+  echo "Copying logs from container"
   kubectl cp $namespace/$jmeter_po:output/result.tar.gz output/. -c $dashboard
 
   if [ $? -ne 0 ]; then
@@ -38,7 +40,7 @@ else
   kubectl exec $jmeter_po -n $namespace -c $dashboard -- rm output/result.tar.gz
 
   echo "Pre-processing the jtl..."
-  nlines=`wc -l output/${filename} | awk '{print $1}'`
+  #nlines=`wc -l output/${filename} | awk '{print $1}'`
 
   head -n 1 output/${filename} > output/temp.jtl
 
@@ -50,17 +52,17 @@ else
   	echo "Downloading Jmeter..."
     wget http://mirrors.advancedhosters.com/apache/jmeter/binaries/apache-jmeter-5.0.tgz
     tar xzvf apache-jmeter-5.0.tgz
-    echo "jmeter.save.saveservice.assertion_results_failure_message=false" >> /apache-jmeter-5.0/bin/jmeter.properties
+    echo "jmeter.save.saveservice.assertion_results_failure_message=false" >> apache-jmeter-5.0/bin/jmeter.properties
     rm apache-jmeter-5.0.tgz
   fi
 
   echo "Generating report..."
-  apache-jmeter-5.0/bin/jmeter -g output/temp.jtl -o output/dashboard.${datestr}
+  JVM_ARGS="-Xms1g -Xmx2g" apache-jmeter-5.0/bin/jmeter -g output/temp.jtl -o output/dashboard.${datestr}
   if [ $? -eq 0 ]; then
   	echo "Longevity reports are saved to ./output/dashboard.${datestr}"
-    rm output/temp.jtl output/${filename}
+    rm output/temp.jtl output/${filename} output/result.tar.gz
   fi
-fi
+#fi
 
 
 
