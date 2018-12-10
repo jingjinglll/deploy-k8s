@@ -57,7 +57,7 @@ datestr=`date "+%y-%m-%d-%H-%M-%S"`
   fi
 
   echo "Generating report..."
-  JVM_ARGS="-Xms1g -Xmx2g" apache-jmeter-5.0/bin/jmeter -g output/temp.jtl -o output/dashboard.${datestr}
+  JVM_ARGS="-Xms1g -Xmx4g" apache-jmeter-5.0/bin/jmeter -g output/temp.jtl -o output/dashboard.${datestr}
   if [ $? -eq 0 ]; then
   	echo "Longevity reports are saved to ./output/dashboard.${datestr}"
     rm output/temp.jtl output/${filename} output/result.tar.gz
