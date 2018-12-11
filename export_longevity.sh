@@ -1,7 +1,7 @@
 #!/bin/bash
 namespace="default"
 filename="result.jtl"
-dashboard="jmeter-dashboard"
+dashboard="jmeter"
 
 
 while true 
@@ -29,7 +29,10 @@ datestr=`date "+%y-%m-%d-%H-%M-%S"`
   echo "zip the logs in container"
   kubectl exec $jmeter_po -n $namespace  -c $dashboard -- tar czvf output/result.tar.gz output/${filename}
   echo "Copying logs from container"
-  kubectl cp $namespace/$jmeter_po:output/result.tar.gz output/. -c $dashboard
+  if [ ! -e output ]; then
+    mkdir output
+  fi
+  kubectl cp $namespace/$jmeter_po:output/result.tar.gz output/result.tar.gz -c $dashboard
 
   if [ $? -ne 0 ]; then
   	echo "Failed to copy result file"
