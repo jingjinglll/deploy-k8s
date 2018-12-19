@@ -34,16 +34,6 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /output
-
-      - name: jmeter-dashboard
-        image: jirnsr/jmeter:latest
-        command:
-          - "tail"
-          - "-f"
-          - "/dev/null"
-        volumeMounts:
-        - name: data
-          mountPath: /output
       volumes:
       - name: data
         persistentVolumeClaim:

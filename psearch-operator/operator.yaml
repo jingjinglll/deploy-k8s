@@ -1,30 +1,34 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pravega-search-operator
+  name: psearch-operator
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: pravega-search-operator
+      name: psearch-operator
   template:
     metadata:
       labels:
-        name: pravega-search-operator
+        name: psearch-operator
     spec:
+      serviceAccountName: psearch-operator
       containers:
-        - name: pravega-search-operator
-          image: jirnsr/pravega-search-operator:latest
+        - name: psearch-operator
+          # Replace this with the built image name
+          image: jirnsr/psearch-operator
           ports:
           - containerPort: 60000
             name: metrics
           command:
-          - pravega-search-operator
+          - psearch-operator
           imagePullPolicy: Always
           env:
             - name: WATCH_NAMESPACE
+              value: ""
+            - name: POD_NAME
               valueFrom:
                 fieldRef:
-                  fieldPath: metadata.namespace
+                  fieldPath: metadata.name
             - name: OPERATOR_NAME
-              value: "pravega-search-operator"
+              value: "psearch-operator"

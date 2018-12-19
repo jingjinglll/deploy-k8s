@@ -50,13 +50,11 @@ kubectl create -n $namespace -f https://raw.githubusercontent.com/pravega/praveg
 
 
 echo "Creating Pravega Search Operator"
-#kubectl create -n $namespace -f https://raw.githubusercontent.com/pravega/psearch-operator/master/deploy/crd.yaml
-#kubectl create -n $namespace -f https://raw.githubusercontent.com/pravega/psearch-operator/master/deploy/rbac.yaml
-#kubectl create -n $namespace -f https://raw.githubusercontent.com/pravega/psearch-operator/master/deploy/operator.yaml
+kubectl create -n $namespace -f psearch-operator/service_account.yaml
+kubectl create -n $namespace -f psearch-operator/role.yaml
+kubectl create -n $namespace -f psearch-operator/role_binding.yaml
 kubectl create -n $namespace -f psearch-operator/crd.yaml
-kubectl create -n $namespace -f psearch-operator/rbac.yaml
 kubectl create -n $namespace -f psearch-operator/operator.yaml
-
 
 echo "Creating Zookeeper Cluster"
 kubectl create -n $namespace -f example/zookeeper.yaml

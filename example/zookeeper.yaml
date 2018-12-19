@@ -3,7 +3,7 @@ kind: "ZookeeperCluster"
 metadata:
   name: "zk"
 spec:
-  size: 2
+  size: 1
   pod:
     labels:
       app: zk
