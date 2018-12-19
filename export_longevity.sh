@@ -29,7 +29,10 @@ datestr=`date "+%y-%m-%d-%H-%M-%S"`
   echo "zip the logs in container"
   kubectl exec $jmeter_po -n $namespace  -c $dashboard -- tar czvf output/result.tar.gz output/${filename}
   echo "Copying logs from container"
-  kubectl cp $namespace/$jmeter_po:output/result.tar.gz output/. -c $dashboard
+  if [ ! -e output ]; then
+    mkdir output
+  fi
+  kubectl cp $namespace/$jmeter_po:output/result.tar.gz output/result.tar.gz -c $dashboard
 
   if [ $? -ne 0 ]; then
   	echo "Failed to copy result file"
@@ -57,7 +60,7 @@ datestr=`date "+%y-%m-%d-%H-%M-%S"`
   fi
 
   echo "Generating report..."
-  JVM_ARGS="-Xms1g -Xmx2g" apache-jmeter-5.0/bin/jmeter -g output/temp.jtl -o output/dashboard.${datestr}
+  JVM_ARGS="-Xms1g -Xmx4g" apache-jmeter-5.0/bin/jmeter -g output/temp.jtl -o output/dashboard.${datestr}
   if [ $? -eq 0 ]; then
   	echo "Longevity reports are saved to ./output/dashboard.${datestr}"
     rm output/temp.jtl output/${filename} output/result.tar.gz
