@@ -20,7 +20,7 @@ spec:
   bookkeeper:
     image:
       repository: jirnsr/bookkeeper
-      tag: 0.4.0
+      tag: latest
       pullPolicy: Always
 
     replicas: 3
@@ -55,7 +55,7 @@ spec:
 
     image:
       repository: jirnsr/pravega
-      tag: 0.4.0
+      tag: latest
       pullPolicy: Always
 
     tier2:
