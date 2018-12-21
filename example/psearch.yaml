@@ -9,31 +9,66 @@ spec:
     image:
       repository: jirnsr/controller
       tag: latest
-      pullPolicy: Always
+      pullPolicy: Always    
+    storage:
+      VolumeClaimTemplate:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "standard"
+        resources:
+          requests:
+            storage: 10Gi
   resthead:
     replicas: 1
     image:
       repository: jirnsr/resthead
       tag: latest
       pullPolicy: Always
+    storage:
+      VolumeClaimTemplate:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "standard"
+        resources:
+          requests:
+            storage: 10Gi
   indexWorker:
     replicas: 1
     image:
       repository: jirnsr/indexworker
       tag: latest
       pullPolicy: Always
+    storage:
+      VolumeClaimTemplate:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "standard"
+        resources:
+          requests:
+            storage: 10Gi
   queryWorker:
     replicas: 1
     image:
       repository: jirnsr/queryworker
       tag: latest
       pullPolicy: Always
+    storage:
+      VolumeClaimTemplate:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "standard"
+        resources:
+          requests:
+            storage: 10Gi
   shardWorker:
     replicas: 1
     image:
       repository: jirnsr/shardworker
       tag: latest
       pullPolicy: Always
+    storage:
+      VolumeClaimTemplate:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "standard"
+        resources:
+          requests:
+            storage: 10Gi
 ---
 kind: Deployment
 apiVersion: apps/v1
