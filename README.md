@@ -5,3 +5,8 @@ The script will create operators(zookeeper, pravega, psearch operator), clusters
 You can customize you yaml files in example folder.
 3. After a while, you can see the kibana service and resthead service are exposed, you can access the url directly.
 4. To test the cluster, call run_test.sh, which will create a testindex and a test stream,  and feed the stream with generated data.
+
+
+Launch a Longevity test
+1. Run "./start_longevity.sh" to start a longevity test
+2. Run "./export_longevity.sh" to export a report
