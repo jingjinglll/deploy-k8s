@@ -31,7 +31,8 @@ helm repo update
 sleep 5
 
 echo "Installing nfs-server-provisioner"
-helm install stable/nfs-server-provisioner
+#helm install stable/nfs-server-provisioner
+helm install stable/nfs-server-provisioner --set=persistence.enabled=true,persistence.size=330Gi,image.repository=jirnsr/nfs-provisioner,image.tag=v1.0.9
 
 kubectl get namespace $namespace > /dev/null 2>&1
 if [ $? != 0 ]

@@ -62,13 +62,16 @@ spec:
       repository: jirnsr/shardworker
       tag: latest
       pullPolicy: Always
+    resources:
+      requests:
+        memory: 2260Mi
     storage:
       VolumeClaimTemplate:
         accessModes: [ "ReadWriteOnce" ]
         storageClassName: "standard"
         resources:
           requests:
-            storage: 10Gi
+            storage: 20Gi
 ---
 kind: Deployment
 apiVersion: apps/v1
@@ -97,7 +100,6 @@ spec:
             - name: "ELASTICSEARCH_URL"
               value: "http://resthead-service:9098"
           command: [ "/bin/bash", "-c", "bin/kibana-plugin remove x-pack; bin/kibana -e http://resthead-service:9098"]
-
 ---
 kind: Service
 apiVersion: v1
