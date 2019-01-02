@@ -1,0 +1,64 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pravega-tier2
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 300Gi
+---
+apiVersion: "pravega.pravega.io/v1alpha1"
+kind: "PravegaCluster"
+metadata:
+  name: "pravega"
+spec:
+  zookeeperUri: zk-client:2181
+
+  bookkeeper:
+    image:
+      repository: jirnsr/bookkeeper
+      tag: latest
+      pullPolicy: Always
+
+    replicas: 3
+
+    storage:
+      ledgerVolumeClaimTemplate:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "standard"
+        resources:
+          requests:
+            storage: 80Gi
+
+      journalVolumeClaimTemplate:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "standard"
+        resources:
+          requests:
+            storage: 80Gi
+
+    autoRecovery: true
+
+  pravega:
+    controllerReplicas: 2
+    segmentStoreReplicas: 3
+
+    cacheVolumeClaimTemplate:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "standard"
+      resources:
+        requests:
+          storage: 80Gi
+
+    image:
+      repository: jirnsr/pravega
+      tag: latest
+      pullPolicy: Always
+
+    tier2:
+      filesystem:
+        persistentVolumeClaim:
+          claimName: pravega-tier2
