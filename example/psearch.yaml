@@ -5,7 +5,7 @@ metadata:
 spec:
   pravegaControllerIP: pravega-pravega-controller
   pSearchController:
-    replicas: 1
+    replicas: 2
     image:
       repository: jirnsr/controller
       tag: latest

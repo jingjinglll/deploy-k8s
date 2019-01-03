@@ -43,7 +43,7 @@ spec:
     autoRecovery: true
 
   pravega:
-    controllerReplicas: 1
+    controllerReplicas: 2
     segmentStoreReplicas: 3
 
     cacheVolumeClaimTemplate:
