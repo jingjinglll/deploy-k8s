@@ -72,7 +72,8 @@
 	&quot;location&quot;: {&#xd;
 		&quot;lat&quot;: &quot;${__Random(-80,80)}.${__Random(01,99)}&quot;,&#xd;
 		&quot;lon&quot;: &quot;${__Random(-179,179)}.${__Random(01,99)}&quot;&#xd;
-	}&#xd;
+	},&#xd;
+	&quot;price&quot;: &quot;${__Random(0,1000)}.${__Random(01,99)}&quot;&#xd;
 }&#xd;
 </stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
@@ -432,6 +433,9 @@
         },&#xd;
         &quot;@timestamp&quot;: {&#xd;
           &quot;type&quot;: &quot;date&quot;&#xd;
+        },&#xd;
+        &quot;price&quot;: {&#xd;
+          &quot;type&quot;: &quot;float&quot;&#xd;
         }&#xd;
       }&#xd;
     }&#xd;
@@ -545,6 +549,9 @@
         },&#xd;
         &quot;@timestamp&quot;: {&#xd;
           &quot;type&quot;: &quot;date&quot;&#xd;
+        },&#xd;
+        &quot;price&quot;: {&#xd;
+          &quot;type&quot;: &quot;float&quot;&#xd;
         }&#xd;
       }&#xd;
     }&#xd;
@@ -658,6 +665,9 @@
         },&#xd;
         &quot;@timestamp&quot;: {&#xd;
           &quot;type&quot;: &quot;date&quot;&#xd;
+        },&#xd;
+        &quot;price&quot;: {&#xd;
+          &quot;type&quot;: &quot;float&quot;&#xd;
         }&#xd;
       }&#xd;
     }&#xd;
