@@ -51,6 +51,15 @@
       <hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="IndexController" enabled="true"/>
         <hashTree>
+          <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+            <stringProp name="CounterConfig.start">1</stringProp>
+            <stringProp name="CounterConfig.end"></stringProp>
+            <stringProp name="CounterConfig.incr">1</stringProp>
+            <stringProp name="CounterConfig.name">counter_value</stringProp>
+            <stringProp name="CounterConfig.format"></stringProp>
+            <boolProp name="CounterConfig.per_user">false</boolProp>
+          </CounterConfig>
+          <hashTree/>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Document Request" enabled="true">
             <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
@@ -58,8 +67,12 @@
                 <elementProp name="" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.value">{&#xd;
-	&quot;message&quot;: &quot;Trying out Pravega Search&quot;,&#xd;
-	&quot;@timestamp&quot;: &quot;2018-02-01T10:57:12&quot;&#xd;
+	&quot;message&quot;: &quot;Trying out Pravega Search ${counter_value}&quot;,&#xd;
+	&quot;@timestamp&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;HH:mm:ss)}&quot;, &#xd;
+	&quot;location&quot;: {&#xd;
+		&quot;lat&quot;: &quot;${__Random(-80,80)}.${__Random(01,99)}&quot;,&#xd;
+		&quot;lon&quot;: &quot;${__Random(-179,179)}.${__Random(01,99)}&quot;&#xd;
+	}&#xd;
 }&#xd;
 </stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
@@ -731,4 +744,3 @@
     </hashTree>
   </hashTree>
 </jmeterTestPlan>
-
