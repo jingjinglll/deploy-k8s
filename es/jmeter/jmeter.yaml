@@ -1,0 +1,43 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: jmeter-task
+  namespace: ns-elasticsearch
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 80Gi
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: jmeter
+  namespace: ns-elasticsearch
+spec:
+  template:
+    metadata:
+      name: jmeter
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: jmeter
+        image: jirnsr/jmeter-es:latest
+        command:
+          - "/apache-jmeter-5.0/bin/jmeter"
+          - "-n"
+          - "-t"
+          - "/TestPlan.jmx"
+          - "-l"
+          - "/output/result.jtl"
+          - "-j"
+          - "/output/log"
+        volumeMounts:
+        - name: data
+          mountPath: /output
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: jmeter-task
+

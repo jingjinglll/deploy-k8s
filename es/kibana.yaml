@@ -1,0 +1,29 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: kibana
+  name: kibana
+  namespace: ns-elasticsearch
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: kibana
+  template:
+    metadata:
+      labels:
+        app: kibana
+    spec:
+      containers:
+        - name: kibana
+          image: elastic/kibana:6.5.0
+          ports:
+            - containerPort: 5601
+              protocol: TCP
+          env:
+            - name: "ELASTICSEARCH_URL"
+              value: "http://elasticsearch-service:9200"
+          command: [ "/bin/bash", "-c", "bin/kibana-plugin remove x-pack; bin/kibana -e http://elasticsearch-service:9200"]
+
