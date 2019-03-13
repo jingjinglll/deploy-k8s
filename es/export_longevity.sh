@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 namespace="ns-elasticsearch"
 filename="result.jtl"
 dashboard="jmeter"
@@ -51,7 +51,7 @@ datestr=`date "+%y-%m-%d-%H-%M-%S"`
   cat output/${filename} | awk -F',' '$16~/^[0-9]+$/' | awk -F',' 'NF==16' | sed "s/\"//g" >> output/temp.jtl
 
 
-  if [ ! -e apache-jmeter-5.0 ]; then
+  if [ ! -e ../apache-jmeter-5.0 ]; then
   	echo "Downloading Jmeter..."
     wget http://mirrors.advancedhosters.com/apache/jmeter/binaries/apache-jmeter-5.0.tgz
     tar xzvf apache-jmeter-5.0.tgz
@@ -60,7 +60,7 @@ datestr=`date "+%y-%m-%d-%H-%M-%S"`
   fi
 
   echo "Generating report..."
-  JVM_ARGS="-Xms10g -Xmx14g" apache-jmeter-5.0/bin/jmeter -g output/temp.jtl -o output/dashboard.${datestr}
+  JVM_ARGS="-Xms2g -Xmx4g" ../apache-jmeter-5.0/bin/jmeter -g output/temp.jtl -o output/dashboard.${datestr}
   if [ $? -eq 0 ]; then
   	echo "Longevity reports are saved to ./output/dashboard.${datestr}"
     rm output/temp.jtl output/${filename} output/result.tar.gz

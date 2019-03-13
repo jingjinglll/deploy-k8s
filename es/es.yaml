@@ -106,7 +106,7 @@ spec:
     role: master
 
 ---
-kind: Deployment
+kind: StatefulSet
 apiVersion: apps/v1beta2
 metadata:
   labels:
@@ -115,6 +115,7 @@ metadata:
   name: elasticsearch-data
   namespace: ns-elasticsearch
 spec:
+  serviceName: "elasticsearch-service"
   replicas: 2
   revisionHistoryLimit: 10
   selector:
@@ -140,7 +141,7 @@ spec:
               protocol: TCP
           volumeMounts:
             - name: esdata
-              mountPath: /usr/share/elasticsearch/data
+              mountPath: /esdata
           env:
             - name: "cluster.name"
               value: "elasticsearch-cluster"
@@ -154,14 +155,21 @@ spec:
               value: "-Xms256m -Xmx256m"
           securityContext:
             privileged: true
-      volumes:
-        - name: esdata
-          emptyDir: {}
+
       serviceAccountName: elasticsearch-admin
       tolerations:
         - key: node-role.kubernetes.io/master
           effect: NoSchedule
-
+  volumeClaimTemplates:
+  - metadata:
+      name: esdata
+      namespace: ns-elasticsearch
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 80Gi
 ---
 kind: Service
 apiVersion: v1
