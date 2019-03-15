@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: tick
+  #namespace: tick
   name: telegraf-ds
 data:
   telegraf.conf: |+
@@ -20,7 +20,7 @@ data:
       hostname = "$HOSTNAME"
       omit_hostname = false
     [[outputs.influxdb]]
-      urls = ["http://influxdb.tick.svc.cluster.local:8086"]
+      urls = ["http://influxdb.default.svc.cluster.local:8086"]
       database = "telegraf"
       retention_policy = "rp_90d"
       write_consistency = "any"
@@ -55,7 +55,7 @@ data:
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  namespace: tick
+  #namespace: tick
   name: telegraf-ds
 spec:
   updateStrategy:
@@ -138,7 +138,7 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: tick
+  #namespace: tick
   name: telegraf-infra
 data:
   telegraf.conf: |+
@@ -157,7 +157,7 @@ data:
       hostname = "telegraf-infra"
       omit_hostname = false
     [[outputs.influxdb]]
-      urls = ["http://influxdb.tick.svc.cluster.local:8086"]
+      urls = ["http://influxdb.default.svc.cluster.local:8086"]
       database = "telegraf"
       retention_policy = "rp_90d"
       write_consistency = "any"
@@ -176,12 +176,15 @@ data:
     [[inputs.mongodb]]
       servers = ["mongodb://mongodb.default.svc.cluster.local"]
       gather_perdb_stats = true
+    [[inputs.statsd]]
+      protocol = "udp"
+      service_address = ":8125"
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: tick
+  #namespace: tick
   name: telegraf-infra
 spec:
   replicas: 1
@@ -201,7 +204,7 @@ spec:
         ports:
         - name: udp
           protocol: UDP
-          containerPort: 8092
+          containerPort: 8125
         - name: http
           containerPort: 8186
         volumeMounts:

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: tick
+  #namespace: tick
   name: influxdb
 spec:
   clusterIP: None
@@ -19,7 +19,7 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: tick
+  #namespace: tick
   name: influxdb
 data:
   influxdb.conf: |+
@@ -37,7 +37,7 @@ data:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  namespace: tick
+  #namespace: tick
   name: influxdb
 spec:
   replicas: 1

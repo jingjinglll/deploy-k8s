@@ -1,5 +1,5 @@
 #!/bin/bash
-namespace="ns-elasticsearch"
+namespace="es"
 
 while true 
 do

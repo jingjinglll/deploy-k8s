@@ -1,5 +1,5 @@
 #!/bin/bash
-namespace="ns-elasticsearch"
+namespace="es"
 filename="result.jtl"
 dashboard="jmeter"
 

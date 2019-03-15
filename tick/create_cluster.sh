@@ -1,5 +1,5 @@
 #!/bin/bash
-namespace="tick"
+#namespace="tick"
 
 while true 
 do
@@ -17,11 +17,21 @@ kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"templat
 helm repo update
 sleep 5
 
-kubectl create ns tick
+echo "Installing nfs-server-provisioner"
+#helm install stable/nfs-server-provisioner
+helm install stable/nfs-server-provisioner --set=persistence.enabled=true,persistence.size=330Gi,image.repository=jirnsr/nfs-provisioner,image.tag=v1.0.9
+
+
+
+#kubectl create ns tick
 kubectl create -f influxdb.yaml -R
+
+#kubectl exec -i -t influxdb-0  -- influx
+
 kubectl create -f telegraf.yaml -R
+kubectl create -f kapacitor.yaml -R
 kubectl create -f chronograf.yaml -R
-kubectl port-forward svc/chronograf 8888:80 --namespace tick
+echo "Export port using: kubectl port-forward svc/chronograf 8888:80"
 
 
 

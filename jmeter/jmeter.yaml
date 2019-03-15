@@ -21,7 +21,8 @@ spec:
       restartPolicy: Never
       containers:
       - name: jmeter
-        image: jirnsr/jmeter:latest
+        image: jirnsr/jmeter:1m20idx
+        imagePullPolicy: Always
         command:
           - "/apache-jmeter-5.0/bin/jmeter"
           - "-n"
@@ -31,6 +32,16 @@ spec:
           - "/output/result.jtl"
           - "-j"
           - "/output/log"
+        volumeMounts:
+        - name: data
+          mountPath: /output
+        
+      - name: jmeter-dashboard
+        image: jirnsr/jmeter:latest
+        command:
+          - "tail"
+          - "-f"
+          - "/dev/null"
         volumeMounts:
         - name: data
           mountPath: /output

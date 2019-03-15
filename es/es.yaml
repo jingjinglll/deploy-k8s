@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: ns-elasticsearch
+  name: es
   labels:
-    name: ns-elasticsearch
+    name: es
 
 ---
 apiVersion: v1
@@ -13,7 +13,7 @@ metadata:
   labels:
     elastic-app: elasticsearch
   name: elasticsearch-admin
-  namespace: ns-elasticsearch
+  namespace: es
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -29,7 +29,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: elasticsearch-admin
-    namespace: ns-elasticsearch
+    namespace: es
 
 ---
 kind: Deployment
@@ -39,7 +39,7 @@ metadata:
     elastic-app: elasticsearch
     role: master
   name: elasticsearch-master
-  namespace: ns-elasticsearch
+  namespace: es
 spec:
   replicas: 3
   revisionHistoryLimit: 10
@@ -96,7 +96,7 @@ metadata:
   labels:
     elastic-app: elasticsearch
   name: elasticsearch-discovery
-  namespace: ns-elasticsearch
+  namespace: es
 spec:
   ports:
     - port: 9300
@@ -113,7 +113,7 @@ metadata:
     elastic-app: elasticsearch
     role: data
   name: elasticsearch-data
-  namespace: ns-elasticsearch
+  namespace: es
 spec:
   serviceName: "elasticsearch-service"
   replicas: 2
@@ -163,7 +163,7 @@ spec:
   volumeClaimTemplates:
   - metadata:
       name: esdata
-      namespace: ns-elasticsearch
+      namespace: es
     spec:
       accessModes:
         - ReadWriteOnce
@@ -177,7 +177,7 @@ metadata:
   labels:
     elastic-app: elasticsearch-service
   name: elasticsearch-service
-  namespace: ns-elasticsearch
+  namespace: es
 spec:
   ports:
     - port: 9200

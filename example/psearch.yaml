@@ -18,7 +18,7 @@ spec:
           requests:
             storage: 10Gi
   resthead:
-    replicas: 1
+    replicas: 2
     image:
       repository: jirnsr/resthead
       tag: latest
@@ -31,7 +31,7 @@ spec:
           requests:
             storage: 10Gi
   indexWorker:
-    replicas: 1
+    replicas: 2
     image:
       repository: jirnsr/indexworker
       tag: latest
@@ -44,7 +44,7 @@ spec:
           requests:
             storage: 10Gi
   queryWorker:
-    replicas: 1
+    replicas: 2
     image:
       repository: jirnsr/queryworker
       tag: latest
@@ -57,14 +57,14 @@ spec:
           requests:
             storage: 10Gi
   shardWorker:
-    replicas: 1
+    replicas: 2
     image:
       repository: jirnsr/shardworker
       tag: latest
       pullPolicy: Always
     resources:
       requests:
-        memory: 2260Mi
+        memory: 2330Mi
     storage:
       VolumeClaimTemplate:
         accessModes: [ "ReadWriteOnce" ]
@@ -72,34 +72,34 @@ spec:
         resources:
           requests:
             storage: 20Gi
----
-kind: Deployment
-apiVersion: apps/v1
-metadata:
-  labels:
-    app: kibana
-  name: kibana
-spec:
-  replicas: 1
-  revisionHistoryLimit: 10
-  selector:
-    matchLabels:
-      app: kibana
-  template:
-    metadata:
-      labels:
-        app: kibana
-    spec:
-      containers:
-        - name: kibana
-          image: docker.elastic.co/kibana/kibana:6.0.0-alpha1
-          ports:
-            - containerPort: 5601
-              protocol: TCP
-          env:
-            - name: "ELASTICSEARCH_URL"
-              value: "http://resthead-service:9098"
-          command: [ "/bin/bash", "-c", "bin/kibana-plugin remove x-pack; bin/kibana -e http://resthead-service:9098"]
+# ---
+# kind: Deployment
+# apiVersion: apps/v1
+# metadata:
+#   labels:
+#     app: kibana
+#   name: kibana
+# spec:
+#   replicas: 1
+#   revisionHistoryLimit: 10
+#   selector:
+#     matchLabels:
+#       app: kibana
+#   template:
+#     metadata:
+#       labels:
+#         app: kibana
+#     spec:
+#       containers:
+#         - name: kibana
+#           image: docker.elastic.co/kibana/kibana:6.0.0-alpha1
+#           ports:
+#             - containerPort: 5601
+#               protocol: TCP
+#           env:
+#             - name: "ELASTICSEARCH_URL"
+#               value: "http://resthead-service:9098"
+#           command: [ "/bin/bash", "-c", "bin/kibana-plugin remove x-pack; bin/kibana -e http://resthead-service:9098"]
 ---
 kind: Service
 apiVersion: v1
