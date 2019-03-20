@@ -17,26 +17,31 @@ done
 echo "Deleting Pravega Search Cluster"
 
 kubectl delete -n $namespace -f example/psearch.yaml
+kubectl delete pvc --selector="app=psearch-controller" -n $namespace
+kubectl delete pvc --selector="app=indexworker" -n $namespace
+kubectl delete pvc --selector="app=queryworker" -n $namespace
+kubectl delete pvc --selector="app=resthead" -n $namespace
+kubectl delete pvc --selector="app=shardworker" -n $namespace
 
 echo "Deleting Pravega Cluster"
 
 kubectl delete -n $namespace -f example/pravega.yaml
-kubectl delete pvc --selector="app=pravega-cluster"
+kubectl delete pvc --selector="app=pravega-cluster" -n $namespace
 
 
 echo "Deleting Zookeeper Cluster"
 
 kubectl delete -n $namespace -f example/zookeeper.yaml
-kubectl delete pvc --selector="app=example"
+kubectl delete pvc --selector="app=zk" -n $namespace
 
 echo "Deleting Jmeter Task"
-kubectl delete -n $namespace -f jmeter/jmeter.yaml
+kubectl delete -n $namespace -f jmeter/jmeter.yaml -n $namespace
 
-echo "Deleting NFS"
-helm del $(helm ls --all --short) --purge
+# echo "Deleting NFS"
+# helm del $(helm ls --all --short) --purge
 
-echo "Deleting all PVCs"
-kubectl delete pvc --all -n $namespace
+# echo "Deleting all PVCs"
+# kubectl delete pvc --all -n $namespace
 
-echo "Deleting all pvc"
-kubectl delete pv --all -n $namespace
+# echo "Deleting all pvc"
+# kubectl delete pv --all -n $namespace
