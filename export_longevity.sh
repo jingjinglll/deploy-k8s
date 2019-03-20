@@ -1,7 +1,7 @@
 #!/bin/bash
 namespace="default"
 filename="result.jtl"
-dashboard="jmeter"
+dashboard="jmeter-dashboard"
 
 
 while true 

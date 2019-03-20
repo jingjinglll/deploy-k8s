@@ -1,139 +1,139 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  #namespace: tick
-  name: telegraf-ds
-data:
-  telegraf.conf: |+
-    [agent]
-      interval = "10s"
-      round_interval = true
-      metric_batch_size = 1000
-      metric_buffer_limit = 10000
-      collection_jitter = "0s"
-      flush_interval = "10s"
-      flush_jitter = "0s"
-      precision = ""
-      debug = true
-      quiet = false
-      logfile = ""
-      hostname = "$HOSTNAME"
-      omit_hostname = false
-    [[outputs.influxdb]]
-      urls = ["http://influxdb.default.svc.cluster.local:8086"]
-      database = "telegraf"
-      retention_policy = "rp_90d"
-      write_consistency = "any"
-      timeout = "5s"
-      username = ""
-      password = ""
-      user_agent = "telegraf"
-      insecure_skip_verify = false
-    [[inputs.cpu]]
-      percpu = true
-      totalcpu = true
-      collect_cpu_time = false
-    [[inputs.disk]]
-      ignore_fs = ["tmpfs", "devtmpfs"]
-    [[inputs.diskio]]
-    [[inputs.docker]]
-      endpoint = "unix:///var/run/docker.sock"
-      container_names = []
-      timeout = "5s"
-      perdevice = true
-      total = false
-    [[inputs.kernel]]
-    [[inputs.kubernetes]]
-      url = "http://$HOSTNAME:10255"
-      bearer_token = "/var/run/secrets/kubernetes.io/serviceaccount/token"
-      insecure_skip_verify = true
-    [[inputs.mem]]
-    [[inputs.processes]]
-    [[inputs.swap]]
-    [[inputs.system]]
----
-apiVersion: apps/v1
-kind: DaemonSet
-metadata:
-  #namespace: tick
-  name: telegraf-ds
-spec:
-  updateStrategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 3
-  selector:
-    matchLabels:
-      app: telegraf
-      type: ds
-  template:
-    metadata:
-      labels:
-        app: telegraf
-        type: ds
-    spec:
-      containers:
-      - name: telegraf
-        image: telegraf:1.5.3-alpine
-        env:
-        - name: HOSTNAME
-          valueFrom:
-            fieldRef:
-              fieldPath: spec.nodeName
-        - name: "HOST_PROC"
-          value: "/rootfs/proc"
-        - name: "HOST_SYS"
-          value: "/rootfs/sys"
-        volumeMounts:
-        - name: sys
-          mountPath: /rootfs/sys
-          readOnly: true
-        - name: proc
-          mountPath: /rootfs/proc
-          readOnly: true
-        - name: docker-socket
-          mountPath: /var/run/docker.sock
-        - name: varrunutmp
-          mountPath: /var/run/utmp
-          readOnly: true
-        - name: varlog
-          mountPath: /var/log
-          readOnly: true
-        - name: varlibdockercontainers
-          mountPath: /var/lib/docker/containers
-          readOnly: true
-        - name: config
-          mountPath: /etc/telegraf
-          readOnly: true
-        #resources:
-        #  requests:
-        #    cpu: 50m
-        #    memory: 500Mi
-        #  limits:
-        #    cpu: 200m
-        #    memory: 500Mi
-      volumes:
-      - name: sys
-        hostPath:
-          path: /sys
-      - name: docker-socket
-        hostPath:
-          path: /var/run/docker.sock
-      - name: proc
-        hostPath:
-          path: /proc
-      - name: varrunutmp
-        hostPath:
-          path: /var/run/utmp
-      - name: varlog
-        hostPath:
-          path: /var/log
-      - name: varlibdockercontainers
-        hostPath:
-          path: /var/lib/docker/containers
-      - name: config
-        configMap:
-          name: telegraf-ds
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   #namespace: tick
+#   name: telegraf-ds
+# data:
+#   telegraf.conf: |+
+#     [agent]
+#       interval = "10s"
+#       round_interval = true
+#       metric_batch_size = 1000
+#       metric_buffer_limit = 10000
+#       collection_jitter = "0s"
+#       flush_interval = "10s"
+#       flush_jitter = "0s"
+#       precision = ""
+#       debug = true
+#       quiet = false
+#       logfile = ""
+#       hostname = "$HOSTNAME"
+#       omit_hostname = false
+#     [[outputs.influxdb]]
+#       urls = ["http://influxdb.default.svc.cluster.local:8086"]
+#       database = "telegraf"
+#       retention_policy = "rp_90d"
+#       write_consistency = "any"
+#       timeout = "5s"
+#       username = ""
+#       password = ""
+#       user_agent = "telegraf"
+#       insecure_skip_verify = false
+#     [[inputs.cpu]]
+#       percpu = true
+#       totalcpu = true
+#       collect_cpu_time = false
+#     [[inputs.disk]]
+#       ignore_fs = ["tmpfs", "devtmpfs"]
+#     [[inputs.diskio]]
+#     [[inputs.docker]]
+#       endpoint = "unix:///var/run/docker.sock"
+#       container_names = []
+#       timeout = "5s"
+#       perdevice = true
+#       total = false
+#     [[inputs.kernel]]
+#     [[inputs.kubernetes]]
+#       url = "http://$HOSTNAME:10255"
+#       bearer_token = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+#       insecure_skip_verify = true
+#     [[inputs.mem]]
+#     [[inputs.processes]]
+#     [[inputs.swap]]
+#     [[inputs.system]]
+# ---
+# apiVersion: apps/v1
+# kind: DaemonSet
+# metadata:
+#   #namespace: tick
+#   name: telegraf-ds
+# spec:
+#   updateStrategy:
+#     type: RollingUpdate
+#     rollingUpdate:
+#       maxUnavailable: 3
+#   selector:
+#     matchLabels:
+#       app: telegraf
+#       type: ds
+#   template:
+#     metadata:
+#       labels:
+#         app: telegraf
+#         type: ds
+#     spec:
+#       containers:
+#       - name: telegraf
+#         image: telegraf:latest
+#         env:
+#         - name: HOSTNAME
+#           valueFrom:
+#             fieldRef:
+#               fieldPath: spec.nodeName
+#         - name: "HOST_PROC"
+#           value: "/rootfs/proc"
+#         - name: "HOST_SYS"
+#           value: "/rootfs/sys"
+#         volumeMounts:
+#         - name: sys
+#           mountPath: /rootfs/sys
+#           readOnly: true
+#         - name: proc
+#           mountPath: /rootfs/proc
+#           readOnly: true
+#         - name: docker-socket
+#           mountPath: /var/run/docker.sock
+#         - name: varrunutmp
+#           mountPath: /var/run/utmp
+#           readOnly: true
+#         - name: varlog
+#           mountPath: /var/log
+#           readOnly: true
+#         - name: varlibdockercontainers
+#           mountPath: /var/lib/docker/containers
+#           readOnly: true
+#         - name: config
+#           mountPath: /etc/telegraf
+#           readOnly: true
+#         #resources:
+#         #  requests:
+#         #    cpu: 50m
+#         #    memory: 500Mi
+#         #  limits:
+#         #    cpu: 200m
+#         #    memory: 500Mi
+#       volumes:
+#       - name: sys
+#         hostPath:
+#           path: /sys
+#       - name: docker-socket
+#         hostPath:
+#           path: /var/run/docker.sock
+#       - name: proc
+#         hostPath:
+#           path: /proc
+#       - name: varrunutmp
+#         hostPath:
+#           path: /var/run/utmp
+#       - name: varlog
+#         hostPath:
+#           path: /var/log
+#       - name: varlibdockercontainers
+#         hostPath:
+#           path: /var/lib/docker/containers
+#       - name: config
+#         configMap:
+#           name: telegraf-ds
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -154,7 +154,7 @@ data:
       debug = true
       quiet = false
       logfile = ""
-      hostname = "telegraf-infra"
+      hostname = ""
       omit_hostname = false
     [[outputs.influxdb]]
       urls = ["http://influxdb.default.svc.cluster.local:8086"]
@@ -168,14 +168,14 @@ data:
       insecure_skip_verify = false
     [[inputs.http_listener]]
       service_address = ":8186"
-    [[inputs.socket_listener]]
-      service_address = "udp://:8092"
-      data_format = "influx"
-    [[inputs.redis]]
-      servers = ["tcp://redis-cache.default.svc.cluster.local", "tcp://redis-broker.default.svc.cluster.local"]
-    [[inputs.mongodb]]
-      servers = ["mongodb://mongodb.default.svc.cluster.local"]
-      gather_perdb_stats = true
+    #[[inputs.socket_listener]]
+      # service_address = "udp://:8092"
+      # data_format = "influx"
+    #[[inputs.redis]]
+    #  servers = ["tcp://redis-cache.default.svc.cluster.local", "tcp://redis-broker.default.svc.cluster.local"]
+    #[[inputs.mongodb]]
+    #  servers = ["mongodb://mongodb.default.svc.cluster.local"]
+    #  gather_perdb_stats = true
     [[inputs.statsd]]
       protocol = "udp"
       service_address = ":8125"
@@ -185,7 +185,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   #namespace: tick
-  name: telegraf-infra
+  name: telegraf
 spec:
   replicas: 1
   selector:
@@ -200,10 +200,11 @@ spec:
     spec:
       containers:
       - name: telegraf
-        image: telegraf:1.5.3-alpine
+        image: telegraf:latest
         ports:
         - name: udp
           protocol: UDP
+          hostPort: 8125
           containerPort: 8125
         - name: http
           containerPort: 8186
@@ -221,3 +222,17 @@ spec:
       - name: config
         configMap:
           name: telegraf-infra
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: telegraf
+  name: 
+spec:
+  ports:
+    - port: 8125
+      targetPort: 8125
+  selector:
+    app: telegraf
+  type: LoadBalancer

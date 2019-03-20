@@ -35,7 +35,7 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /output
-        
+
       - name: jmeter-dashboard
         image: jirnsr/jmeter:latest
         command:

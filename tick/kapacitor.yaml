@@ -54,7 +54,7 @@ spec:
     spec:
       containers:
       - name: kapacitor
-        image: kapacitor:1.4.1-alpine
+        image: kapacitor:latest
         env:
         - name: KAPACITOR_HOSTNAME
           value: kapacitor

@@ -74,7 +74,7 @@ spec:
               path: init.iql
       containers:
       - name: influxdb
-        image: influxdb:1.5.2-alpine
+        image: influxdb:latest
         ports:
         - name: api
           containerPort: 8086
