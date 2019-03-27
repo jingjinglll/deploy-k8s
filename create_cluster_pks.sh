@@ -16,7 +16,7 @@ do
 done
 
 echo "Initializing helm"
-helm init
+helm init --upgrade
 kubectl create serviceaccount --namespace kube-system tiller
 kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
 #kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
@@ -26,9 +26,13 @@ kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec": {"templa
 helm repo update
 sleep 5
 
+
+echo "Storage class"
+kubectl create -f example/sc.yaml
+
 echo "Installing nfs-server-provisioner"
 #helm install stable/nfs-server-provisioner --set=persistence.enabled=true,persistence.size=60Gi
-helm install stable/nfs-server-provisioner --set=persistence.enabled=true,persistence.size=200Gi,image.repository=jirnsr/nfs-provisioner,image.tag=v1.0.9
+helm install stable/nfs-server-provisioner --set=persistence.enabled=true,persistence.size=300Gi,image.repository=jirnsr/nfs-provisioner,image.tag=v1.0.9
 
 kubectl get namespace $namespace > /dev/null 2>&1
 if [ $? != 0 ]

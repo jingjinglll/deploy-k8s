@@ -8,7 +8,7 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 200Gi
+      storage: 80Gi
 ---
 apiVersion: "pravega.pravega.io/v1alpha1"
 kind: "PravegaCluster"
@@ -19,7 +19,7 @@ spec:
 
   bookkeeper:
     image:
-      repository: jirnsr/bookkeeper
+      repository: pravega/bookkeeper
       tag: latest
       pullPolicy: Always
 
@@ -31,30 +31,34 @@ spec:
         storageClassName: "standard"
         resources:
           requests:
-            storage: 80Gi
+            storage: 20Gi
 
       journalVolumeClaimTemplate:
         accessModes: [ "ReadWriteOnce" ]
         storageClassName: "standard"
         resources:
           requests:
-            storage: 80Gi
+            storage: 20Gi
 
     autoRecovery: true
 
   pravega:
-    controllerReplicas: 2
+    controllerReplicas: 1
     segmentStoreReplicas: 3
+    options:
+      metrics.enableStatistics: "true"
+      metrics.statsdHost: "telegraph.default"
+      metrics.statsdPort: "8125"
 
     cacheVolumeClaimTemplate:
       accessModes: [ "ReadWriteOnce" ]
       storageClassName: "standard"
       resources:
         requests:
-          storage: 80Gi
+          storage: 20Gi
 
     image:
-      repository: jirnsr/pravega
+      repository: pravega/pravega
       tag: latest
       pullPolicy: Always
 
