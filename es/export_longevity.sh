@@ -53,7 +53,7 @@ datestr=`date "+%y-%m-%d-%H-%M-%S"`
 
   if [ ! -e ../apache-jmeter-5.0 ]; then
   	echo "Downloading Jmeter..."
-    wget http://mirrors.advancedhosters.com/apache/jmeter/binaries/apache-jmeter-5.0.tgz
+    wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.0.tgz
     tar xzvf apache-jmeter-5.0.tgz
     echo "jmeter.save.saveservice.assertion_results_failure_message=false" >> apache-jmeter-5.0/bin/jmeter.properties
     rm apache-jmeter-5.0.tgz
