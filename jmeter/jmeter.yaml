@@ -21,7 +21,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: jmeter
-        image: jirnsr/jmeter:1m20idx
+        image: jirnsr/jmeter:100k10idx
         imagePullPolicy: Always
         command:
           - "/apache-jmeter-5.0/bin/jmeter"

@@ -24,7 +24,7 @@ kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec": {"templa
 #kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec": {"template": {"spec": {"serviceAccount": "tiller","containers": [{"image": "jirnsr/tiller:v2.12.1"}]} } } }'
 
 helm repo update
-sleep 5
+sleep 10
 
 
 echo "Storage class"
