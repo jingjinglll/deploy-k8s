@@ -64,6 +64,8 @@ kubectl create -n $namespace -f psearch-operator/role_binding.yaml
 kubectl create -n $namespace -f psearch-operator/crd.yaml
 kubectl create -n $namespace -f psearch-operator/operator.yaml
 
+sleep 5
+
 echo "Creating Zookeeper Cluster"
 kubectl create -n $namespace -f example/zookeeper.yaml
 
