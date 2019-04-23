@@ -1,0 +1,61 @@
+# kind: PersistentVolumeClaim
+# apiVersion: v1
+# metadata:
+#   name: rally-data-provider-store
+#   namespace: es
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 100Gi
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: rally-data-provider
+  name: rally-data-provider
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: rally-data-provider
+  template:
+    metadata:
+      labels:
+        app: rally-data-provider
+    spec:
+      containers:
+        - name: rally-data-provider
+          image: supengfei/rally_data_provider:20gb
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: "PROVIDER_URL"
+              value: "http://rally-data-provider:8080"
+          command: [ "/bin/bash", "-c", "java -jar RallyDataProvider-0.0.1-SNAPSHOT.jar --dataBasePath=/usr/data"]
+          volumeMounts:
+            - mountPath: "/usr/data/"
+              name: rally-data-provider-store
+      volumes:
+        - name: rally-data-provider-store
+          persistentVolumeClaim:
+           claimName: rally-data-provider-store
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: rally-data-provider
+  name: rally-data-provider-external
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: rally-data-provider
+  type: LoadBalancer
+

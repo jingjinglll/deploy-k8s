@@ -1,0 +1,40 @@
+{
+  "settings" : {
+    "index" : {
+      "number_of_shards" : 2
+    }
+  },
+  "mappings" : {
+    "default": {
+      "properties": {
+		  "user": {
+			"type": "keyword"
+		  },
+		  "creationDate": {
+			"type": "date"
+		  },
+		  "title": {
+			"type": "text"
+		  },
+		  "questionId": {
+			"type": "keyword"
+		  },
+		  "answerId": {
+			"type": "keyword"
+		  },
+		  "acceptedAnswerId": {
+			"type": "keyword"
+		  },
+		  "tags": {
+			"type": "keyword"
+		  },
+		  "body": {
+			"type": "text"
+		  },
+		  "type": {
+			"type": "keyword"
+		  }
+		}
+    }
+  }
+}

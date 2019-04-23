@@ -1,0 +1,41 @@
+{
+  "settings": {
+    "number_of_shards": 2,
+    "number_of_replicas": 2,
+	"index.requests.cache.enable" : false,
+	"index.queries.cache.enabled" : false
+  },
+  "mappings": {
+	"_doc" : {
+	  "properties": {
+		  "user": {
+			"type": "keyword"
+		  },
+		  "creationDate": {
+			"type": "date"
+		  },
+		  "title": {
+			"type": "text"
+		  },
+		  "questionId": {
+			"type": "keyword"
+		  },
+		  "answerId": {
+			"type": "keyword"
+		  },
+		  "acceptedAnswerId": {
+			"type": "keyword"
+		  },
+		  "tags": {
+			"type": "keyword"
+		  },
+		  "body": {
+			"type": "text"
+		  },
+		  "type": {
+			"type": "keyword"
+		  }
+		}
+	}
+  }
+}

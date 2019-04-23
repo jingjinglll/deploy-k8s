@@ -1,0 +1,41 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: es-test-client
+  namespace: es
+spec:
+  template:
+    metadata:
+      name: es-test-client
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: es-test-client
+        image: supengfei/es-test-client:20gbEP9
+        command:  [ "/bin/bash", "-c", 
+        "mkdir /home/log;
+         # java -jar rallyClient-0.0.1-SNAPSHOT.jar --spring.profiles.active=es --indexName=so --dataSize=10000 --parallelism=1;
+         # tar -cvzf es_so_1_10k.tar /home/log;
+         # rm -rf /home/log;
+         # mkdir /home/log;
+         
+         # java -jar rallyClient-0.0.1-SNAPSHOT.jar --spring.profiles.active=es --indexName=taxi --dataType=nyc_taxis --dataSize=10000 
+         #   --parallelism=1 --indexFileName=esTaxisIndex.json;
+         # tar -cvzf es_taxis_1_10k.tar /home/log;
+         # rm -rf /home/log;
+         # mkdir /home/log;
+         
+         java -jar rallyClient-0.0.1-SNAPSHOT.jar --spring.profiles.active=es --indexName=10kso --dataSize=100000 --parallelism=10 
+         --dataProviderUrl=http://10.247.39.78:8080/data/retrieve/;
+         tar -cvzf es_so_10_100k.tar /home/log;
+         rm -rf /home/log;
+         mkdir /home/log;
+         
+         java -jar rallyClient-0.0.1-SNAPSHOT.jar --spring.profiles.active=es --indexName=10ktaxi --dataType=nyc_taxis --dataSize=100000 
+           --parallelism=10 --indexFileName=esTaxisIndex.json --dataProviderUrl=http://10.247.39.78:8080/data/retrieve/;
+         tar -cvzf es_taxis_10_100k.tar /home/log;
+         rm -rf /home/log;
+         mkdir /home/log;
+         
+
+         tail -f /dev/null"]
