@@ -7,7 +7,7 @@ spec:
   pSearchController:
     replicas: 2
     image:
-      repository: jirnsr/controller
+      repository: asdrepo.isus.emc.com:8102/pravega-search/controller
       tag: latest
       pullPolicy: Always    
     storage:
@@ -20,7 +20,7 @@ spec:
   resthead:
     replicas: 2
     image:
-      repository: jirnsr/resthead
+      repository: asdrepo.isus.emc.com:8102/pravega-search/resthead
       tag: latest
       pullPolicy: Always
     storage:
@@ -33,7 +33,7 @@ spec:
   indexWorker:
     replicas: 2
     image:
-      repository: jirnsr/indexworker
+      repository: asdrepo.isus.emc.com:8102/pravega-search/indexworker
       tag: latest
       pullPolicy: Always
     storage:
@@ -46,7 +46,7 @@ spec:
   queryWorker:
     replicas: 2
     image:
-      repository: jirnsr/queryworker
+      repository: asdrepo.isus.emc.com:8102/pravega-search/queryworker
       tag: latest
       pullPolicy: Always
     storage:
@@ -59,7 +59,7 @@ spec:
   shardWorker:
     replicas: 2
     image:
-      repository: jirnsr/shardworker
+      repository: asdrepo.isus.emc.com:8102/pravega-search/shardworker
       tag: latest
       pullPolicy: Always
     resources:
