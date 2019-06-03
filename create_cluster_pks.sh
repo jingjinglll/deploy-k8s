@@ -20,7 +20,7 @@ helm init --upgrade
 kubectl create serviceaccount --namespace kube-system tiller
 kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
 #kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
-kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec": {"template": {"spec": {"serviceAccount": "tiller","containers": [{"name": "tiller","image": "jirnsr/tiller:v2.13.1"}]} } } }'
+kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec": {"template": {"spec": {"serviceAccount": "tiller","containers": [{"name": "tiller","image": "jirnsr/tiller:v2.14.0"}]} } } }'
 #kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec": {"template": {"spec": {"serviceAccount": "tiller","containers": [{"image": "jirnsr/tiller:v2.12.1"}]} } } }'
 
 helm repo update
