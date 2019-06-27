@@ -1,0 +1,4 @@
+image:
+  repository: jirnsr/psearch-operator
+  tag: latest
+  pullPolicy: Always

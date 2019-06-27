@@ -1,0 +1,35 @@
+# Default values for pravega.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+pravegaControllerIP: pravega-pravega-controller
+
+pSearchController:
+  image:
+    repository: jirnsr/controller
+    tag: latest
+  replicas: 3
+
+resthead:
+  image:
+    repository: jirnsr/resthead
+    tag: latest
+  replicas: 3
+
+indexWorker:
+  image:
+    repository: jirnsr/indexworker
+    tag: latest
+  replicas: 3
+
+queryWorker:
+  image:
+    repository: jirnsr/queryworker
+    tag: latest
+  replicas: 3
+
+shardWorker:
+  image:
+    repository: jirnsr/shardworker
+    tag: latest
+  replicas: 3

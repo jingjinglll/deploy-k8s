@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: psearch-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: psearch-operator
+  template:
+    metadata:
+      labels:
+        name: psearch-operator
+    spec:
+      serviceAccountName: psearch-operator
+      containers:
+        - name: psearch-operator
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: 60000
+              name: metrics
+          command:
+            - psearch-operator
+          imagePullPolicy: Always
+          env:
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: "psearch-operator"

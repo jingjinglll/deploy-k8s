@@ -1,0 +1,103 @@
+apiVersion: "search.pravega.io/v1alpha1"
+kind: "PravegaSearch"
+metadata:
+  name: "psearch-cluster"
+spec:
+  pravegaControllerIP: {{ .Values.pravegaControllerIP }}
+  pSearchController:
+    replicas: {{ .Values.pSearchController.replicas }}
+    image:
+      repository: {{ .Values.pSearchController.image.repository }}
+      tag: {{ .Values.pSearchController.image.tag }}
+      pullPolicy: Always    
+    storage:
+      VolumeClaimTemplate:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "standard"
+        resources:
+          requests:
+            storage: 10Gi
+  resthead:
+    replicas: {{ .Values.resthead.replicas }}
+    image:
+      repository: {{ .Values.resthead.image.repository }}
+      tag: {{ .Values.resthead.image.tag }}
+      pullPolicy: Always
+    storage:
+      VolumeClaimTemplate:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "standard"
+        resources:
+          requests:
+            storage: 10Gi
+  indexWorker:
+    replicas: {{ .Values.indexWorker.replicas }}
+    image:
+      repository: {{ .Values.indexWorker.image.repository }}
+      tag: {{ .Values.indexWorker.image.tag }}
+      pullPolicy: Always
+    storage:
+      VolumeClaimTemplate:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "standard"
+        resources:
+          requests:
+            storage: 10Gi
+  queryWorker:
+    replicas: {{ .Values.queryWorker.replicas }}
+    image:
+      repository: {{ .Values.queryWorker.image.repository }}
+      tag: {{ .Values.queryWorker.image.tag }}
+      pullPolicy: Always
+    storage:
+      VolumeClaimTemplate:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "standard"
+        resources:
+          requests:
+            storage: 10Gi
+  shardWorker:
+    replicas: {{ .Values.shardWorker.replicas }}
+    image:
+      repository: {{ .Values.shardWorker.image.repository }}
+      tag: {{ .Values.shardWorker.image.tag }}
+      pullPolicy: Always
+    resources:
+      requests:
+        memory: 2330Mi
+    storage:
+      VolumeClaimTemplate:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "standard"
+        resources:
+          requests:
+            storage: 20Gi
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: resthead
+  name: resthead-service-external
+spec:
+  ports:
+    - port: 9098
+      targetPort: 9098
+  selector:
+    app: resthead
+  type: LoadBalancer
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: kibana
+  name: kibana-service
+spec:
+  ports:
+    - port: 5601
+      targetPort: 5601
+  selector:
+    app: kibana
+  type: LoadBalancer
+  
