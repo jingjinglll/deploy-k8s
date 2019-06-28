@@ -29,7 +29,7 @@ echo "Storage class"
 kubectl create -f example/sc.yaml
 
 echo "Installing nfs-server-provisioner"
-helm install stable/nfs-server-provisioner --set=persistence.enabled=true,persistence.size=300Gi,image.repository=jirnsr/nfs-provisioner,image.tag=v1.0.9
+helm install stable/nfs-server-provisioner --set=persistence.enabled=true,persistence.size=300Gi,image.repository=jirnsr/nfs-provisioner,image.tag=v1.0.9 --namespace $namespace
 
 kubectl get namespace $namespace > /dev/null 2>&1
 if [ $? != 0 ]
@@ -46,10 +46,10 @@ kubectl create -n $namespace -f zookeeper-operator/rbac.yaml
 kubectl create -n $namespace -f https://raw.githubusercontent.com/pravega/zookeeper-operator/master/deploy/all_ns/operator.yaml
 
 echo "Creating Pravega Operator"
-helm install charts/pravega-operator
+helm install charts/pravega-operator --namespace $namespace --set image.repository=pravega/pravega-operator
 
 echo "Creating Pravega Search Operator"
-helm install charts/psearch-operator
+helm install charts/psearch-operator --namespace $namespace
 
 sleep 5
 
@@ -58,12 +58,12 @@ kubectl create -n $namespace -f example/zookeeper.yaml
 
 echo "Creating Pravega Cluster"
 # kubectl create -n $namespace -f example/pravega.yaml
-kubectl create -f ./example/pvc-tier2.yaml
-helm install charts/pravega --name pravega --set zookeeperUri=zk-client:2181 --set pravega.tier2=pravega-tier2 \
-   --set version=0.5.0 --set bookkeeper.image.repository=jirnsr/bookkeeper --set pravega.image.repository=jirnsr/pravega
+kubectl create -f ./example/pvc-tier2.yaml --namespace $namespace
+helm install charts/pravega --name pravega --namespace $namespace --set zookeeperUri=zk-client:2181 --set pravega.tier2=pravega-tier2 \
+   --set version=0.4.0 --set bookkeeper.image.repository=pravega/bookkeeper --set pravega.image.repository=pravega/pravega
 
 echo "Creating Pravega Search Cluster"
-helm install charts/psearch --name psearch --set pravegaControllerIP=pravega-pravega-pravega-controller 
+helm install charts/psearch --name psearch --namespace $namespace --set pravegaControllerIP=pravega-pravega-pravega-controller 
 
 echo "Verify services and create kibana index"
 ./verify_pks.sh -n $namespace -k $kibana_service -r $resthead_service
