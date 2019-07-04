@@ -1,7 +1,7 @@
 apiVersion: "search.pravega.io/v1alpha1"
 kind: "PravegaSearch"
 metadata:
-  name: "psearch-cluster"
+  name: {{ template "psearch.fullname" . }}
 spec:
   pravegaControllerIP: {{ .Values.pravegaControllerIP }}
   pSearchController:
