@@ -1,0 +1,43 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: kibana
+  name: kibana
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: kibana
+  template:
+    metadata:
+      labels:
+        app: kibana
+    spec:
+      containers:
+        - name: kibana
+          image: docker.elastic.co/kibana/kibana:6.0.0-alpha1
+          ports:
+            - containerPort: 5601
+              protocol: TCP
+          env:
+            - name: "ELASTICSEARCH_URL"
+              value: "http://resthead-service:9098"
+          command: [ "/bin/bash", "-c", "bin/kibana-plugin remove x-pack; bin/kibana -e http://resthead-service:9098"]
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: kibana
+  name: kibana-service
+spec:
+  ports:
+    - port: 5601
+      targetPort: 5601
+  selector:
+    app: kibana
+  type: LoadBalancer
