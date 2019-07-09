@@ -18,14 +18,14 @@ spec:
     spec:
       containers:
         - name: kibana
-          image: docker.elastic.co/kibana/kibana:6.0.0-alpha1
+          image: docker.elastic.co/kibana/kibana-oss:6.0.0
           ports:
             - containerPort: 5601
               protocol: TCP
           env:
             - name: "ELASTICSEARCH_URL"
               value: "http://resthead-service:9098"
-          command: [ "/bin/bash", "-c", "bin/kibana-plugin remove x-pack; bin/kibana -e http://resthead-service:9098"]
+          command: [ "/bin/bash", "-c", "bin/kibana -e http://resthead-service:9098"]
 
 ---
 kind: Service
