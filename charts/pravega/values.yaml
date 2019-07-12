@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-version: 0.5.0
+version: 0.5.0-2299.8779f22 
 zookeeperUri: zk-client:2181
 
 externalAccess:
@@ -11,19 +11,19 @@ externalAccess:
 
 bookkeeper:
   image:
-    repository: pravega/bookkeeper
+    repository: devops-repo.isus.emc.com:8116/nautilus/bookkeeper
   replicas: 3
   storage:
-    ledgerVolumeRequest: 10Gi
-    journalVolumeRequest: 10Gi
-    indexVolumeRequest: 10Gi
+    ledgerVolumeRequest: 30Gi
+    journalVolumeRequest: 80Gi
+    indexVolumeRequest: 50Gi
   autoRecovery: true
 
 pravega:
   image:
-    repository: pravega/pravega
-  controllerReplicas: 1
-  segmentStoreReplicas: 1
+    repository: devops-repo.isus.emc.com:8116/nautilus/pravega
+  controllerReplicas: 2
+  segmentStoreReplicas: 3
   debugLogging: false
-  cacheVolumeRequest: 20Gi
+  cacheVolumeRequest: 50Gi
   tier2: pravega-tier2

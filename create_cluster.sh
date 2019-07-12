@@ -29,7 +29,7 @@ echo "Storage class"
 kubectl create -f example/sc.yaml
 
 echo "Installing nfs-server-provisioner"
-helm install stable/nfs-server-provisioner --set=persistence.enabled=true,persistence.size=300Gi,image.repository=jirnsr/nfs-provisioner,image.tag=v1.0.9 --namespace $namespace
+helm install stable/nfs-server-provisioner --set=persistence.enabled=true,persistence.size=600Gi,image.repository=jirnsr/nfs-provisioner,image.tag=v1.0.9 --namespace $namespace
 
 kubectl get namespace $namespace > /dev/null 2>&1
 if [ $? != 0 ]
@@ -59,12 +59,12 @@ kubectl create -n $namespace -f example/zookeeper.yaml
 echo "Creating Pravega Cluster"
 # kubectl create -n $namespace -f example/pravega.yaml
 kubectl create -f ./example/pvc-tier2.yaml --namespace $namespace
-helm install charts/pravega --name pravega --namespace $namespace --set zookeeperUri=zk-client:2181 --set pravega.tier2=pravega-tier2 \
-   --set version=0.4.0 --set bookkeeper.image.repository=pravega/bookkeeper --set pravega.image.repository=pravega/pravega
+helm install charts/pravega --name pravega --namespace $namespace --set zookeeperUri=zk-client:2181 --set pravega.tier2=pravega-tier2 
+   #--set version=0.5.0 --set bookkeeper.image.repository=pravega/bookkeeper --set pravega.image.repository=pravega/pravega
 
 echo "Creating Pravega Search Cluster"
 helm install charts/psearch --name psearch --namespace $namespace --set pravegaControllerIP=pravega-pravega-pravega-controller 
 
-echo "Verify services and create kibana index"
-./verify_pks.sh -n $namespace -k $kibana_service -r $resthead_service
+# echo "Verify services and create kibana index"
+# ./verify_pks.sh -n $namespace -k $kibana_service -r $resthead_service
 

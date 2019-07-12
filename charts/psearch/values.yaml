@@ -7,29 +7,29 @@ pravegaControllerIP: pravega-pravega-controller
 pSearchController:
   image:
     repository: jirnsr/controller
-    tag: latest
-  replicas: 3
+    tag: v0.5
+  replicas: 2
 
 resthead:
   image:
     repository: jirnsr/resthead
-    tag: latest
-  replicas: 3
+    tag: v0.5
+  replicas: 2
 
 indexWorker:
   image:
     repository: jirnsr/indexworker
-    tag: latest
-  replicas: 3
+    tag: v0.5
+  replicas: 2
 
 queryWorker:
   image:
     repository: jirnsr/queryworker
-    tag: latest
-  replicas: 3
+    tag: v0.5
+  replicas: 2
 
 shardWorker:
   image:
     repository: jirnsr/shardworker
-    tag: latest
-  replicas: 3
+    tag: v0.5
+  replicas: 2
