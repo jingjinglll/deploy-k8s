@@ -17,11 +17,11 @@ done
 echo "Deleting Pravega Search Cluster"
 
 helm del psearch --purge
-kubectl delete pvc --selector="app=psearch-controller" -n $namespace
-kubectl delete pvc --selector="app=indexworker" -n $namespace
-kubectl delete pvc --selector="app=queryworker" -n $namespace
-kubectl delete pvc --selector="app=resthead" -n $namespace
-kubectl delete pvc --selector="app=shardworker" -n $namespace
+# kubectl delete pvc --selector="app=psearch-controller" -n $namespace
+# kubectl delete pvc --selector="app=indexworker" -n $namespace
+# kubectl delete pvc --selector="app=queryworker" -n $namespace
+# kubectl delete pvc --selector="app=resthead" -n $namespace
+# kubectl delete pvc --selector="app=shardworker" -n $namespace
 
 echo "Deleting Pravega Cluster"
 
