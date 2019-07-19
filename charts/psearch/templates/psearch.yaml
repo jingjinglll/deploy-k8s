@@ -10,52 +10,24 @@ spec:
       repository: {{ .Values.pSearchController.image.repository }}
       tag: {{ .Values.pSearchController.image.tag }}
       pullPolicy: Always    
-    storage:
-      VolumeClaimTemplate:
-        accessModes: [ "ReadWriteOnce" ]
-        storageClassName: "standard"
-        resources:
-          requests:
-            storage: 10Gi
   resthead:
     replicas: {{ .Values.resthead.replicas }}
     image:
       repository: {{ .Values.resthead.image.repository }}
       tag: {{ .Values.resthead.image.tag }}
       pullPolicy: Always
-    storage:
-      VolumeClaimTemplate:
-        accessModes: [ "ReadWriteOnce" ]
-        storageClassName: "standard"
-        resources:
-          requests:
-            storage: 10Gi
   indexWorker:
     replicas: {{ .Values.indexWorker.replicas }}
     image:
       repository: {{ .Values.indexWorker.image.repository }}
       tag: {{ .Values.indexWorker.image.tag }}
       pullPolicy: Always
-    storage:
-      VolumeClaimTemplate:
-        accessModes: [ "ReadWriteOnce" ]
-        storageClassName: "standard"
-        resources:
-          requests:
-            storage: 10Gi
   queryWorker:
     replicas: {{ .Values.queryWorker.replicas }}
     image:
       repository: {{ .Values.queryWorker.image.repository }}
       tag: {{ .Values.queryWorker.image.tag }}
       pullPolicy: Always
-    storage:
-      VolumeClaimTemplate:
-        accessModes: [ "ReadWriteOnce" ]
-        storageClassName: "standard"
-        resources:
-          requests:
-            storage: 10Gi
   shardWorker:
     replicas: {{ .Values.shardWorker.replicas }}
     image:
@@ -65,13 +37,6 @@ spec:
     resources:
       requests:
         memory: 2330Mi
-    storage:
-      VolumeClaimTemplate:
-        accessModes: [ "ReadWriteOnce" ]
-        storageClassName: "standard"
-        resources:
-          requests:
-            storage: 20Gi
 ---
 kind: Service
 apiVersion: v1
@@ -86,18 +51,5 @@ spec:
   selector:
     app: resthead
   type: LoadBalancer
----
-kind: Service
-apiVersion: v1
-metadata:
-  labels:
-    app: kibana
-  name: kibana-service
-spec:
-  ports:
-    - port: 5601
-      targetPort: 5601
-  selector:
-    app: kibana
-  type: LoadBalancer
+  
   

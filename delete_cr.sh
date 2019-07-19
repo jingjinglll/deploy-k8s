@@ -38,10 +38,15 @@ echo "Deleting Jmeter Task"
 kubectl delete -n $namespace -f jmeter/jmeter.yaml -n $namespace
 
 # echo "Deleting NFS"
-# helm del $(helm ls --all --short) --purge
+helm del $(helm ls --all --short) --purge
 
 # echo "Deleting all PVCs"
-# kubectl delete pvc --all -n $namespace
+kubectl delete pvc --all -n $namespace
 
 # echo "Deleting all pvc"
 # kubectl delete pv --all -n $namespace
+
+echo "Deleting Zookeeper Operator"
+kubectl delete -n $namespace -f https://raw.githubusercontent.com/pravega/zookeeper-operator/master/deploy/all_ns/operator.yaml
+kubectl delete -n $namespace -f https://raw.githubusercontent.com/pravega/zookeeper-operator/master/deploy/all_ns/rbac.yaml
+kubectl delete -n $namespace -f https://raw.githubusercontent.com/pravega/zookeeper-operator/master/deploy/crds/zookeeper_v1beta1_zookeepercluster_crd.yaml

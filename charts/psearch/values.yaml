@@ -6,30 +6,30 @@ pravegaControllerIP: pravega-pravega-controller
 
 pSearchController:
   image:
-    repository: jirnsr/controller
-    tag: v0.5
+    repository: devops-repo.isus.emc.com:8116/nautilus/psearch-controller
+    tag: 0.5.0
   replicas: 2
 
 resthead:
   image:
-    repository: jirnsr/resthead
-    tag: v0.5
+    repository: devops-repo.isus.emc.com:8116/nautilus/psearch-resthead
+    tag: 0.5.0
   replicas: 2
 
 indexWorker:
   image:
-    repository: jirnsr/indexworker
-    tag: v0.5
+    repository: devops-repo.isus.emc.com:8116/nautilus/psearch-indexworker
+    tag: 0.5.0
   replicas: 2
 
 queryWorker:
   image:
-    repository: jirnsr/queryworker
-    tag: v0.5
+    repository: devops-repo.isus.emc.com:8116/nautilus/psearch-queryworker
+    tag: 0.5.0
   replicas: 2
 
 shardWorker:
   image:
-    repository: jirnsr/shardworker
-    tag: v0.5
+    repository: devops-repo.isus.emc.com:8116/nautilus/psearch-shardworker
+    tag: 0.5.0
   replicas: 2
